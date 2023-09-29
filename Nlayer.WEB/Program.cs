@@ -8,12 +8,15 @@ using Nlayer.Services.Mapping;
 using FluentValidation.AspNetCore;
 using Nlayer.Services.Validation;
 using Nlayer.WEB;
+using Nlayer.WEB.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<ProductDtoValidator>());
 builder.Services.AddAutoMapper(typeof(MapProfile));
+
+
 
 
 builder.Services.AddDbContext<AppDbContext>(x =>
@@ -23,6 +26,26 @@ builder.Services.AddDbContext<AppDbContext>(x =>
         option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
     });
 });
+
+
+
+
+
+
+builder.Services.AddHttpClient<ProductAPIService>(opt =>
+{
+    opt.BaseAddress = new(builder.Configuration["BaseUrl"]);
+});
+builder.Services.AddHttpClient<CategoryAPIService>(opt =>
+{
+    opt.BaseAddress = new(builder.Configuration["BaseUrl"]);
+});
+
+
+
+
+
+
 builder.Services.AddScoped(typeof(NotFoundFilter<>));
 
 
