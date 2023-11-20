@@ -21,5 +21,6 @@ namespace Nlayer.Core.Repositories
         void Update(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
+        Task AnyAsync<Dto>(Expression<Func<Dto, bool>> expression) where Dto : class;
     }
 }
